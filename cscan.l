@@ -1,7 +1,6 @@
 %{
-/******************/
-/* C decl section */
-/******************/
+   /* C decl section */
+
 #include <stdio.h>
 #include <ctype.h>
 #include <string.h>
@@ -27,24 +26,19 @@ TOKEN_FREQ tokenfreq[] = {
 void insert_update(char *);
 %}
 
-/*******************************/
-/* regular definition  section */
-/*******************************/
+  /* regular definition  section */
+
 
 
 %%
-/**************************/
-/* regular rules  section */
-/**************************/
+  /* regular rules  section */
+
 
 
 
 
 %%
-
-/*********************************/
-/* C/C++ code definition section */
-/*********************************/
+  /* C/C++ code definition section */
 
 int
 main() {
@@ -71,5 +65,6 @@ insert_update(char *name) {
    for (i=0; tokenfreq[i].freq != -1; i++) {
       if (!strcmp(name,tokenfreq[i].token)) {
          tokenfreq[i].freq++;
-  }
+      }
+   }
 }
