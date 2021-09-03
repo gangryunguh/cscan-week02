@@ -27,15 +27,35 @@ void insert_update(char *);
 %}
 
   /* regular definition  section */
-
-
+quote \'
+back  \\
+ditto \"
+octal [0-7]
+octch ({back}{octal}|{back}{octal}{octal}|{back}{octal}{octal})
+digit [0-9]
+alpha [a-zA-Z_]
+schar [^'\"\n\\]
+char  ({back}?({schar}|{ditto})|{back}{back}|{back}{quote}|{octch})
+str   {back}?({schar}|{quote})|{back}{back}|{back}{ditto}|{octch}
 
 %%
   /* regular rules  section */
 
+[ \t]*                      ;
+{digit}+                    { /* number token */
+                              insert_update("number");
+                              printf("%s\n", yytext);
+                            }
 
-
-
+{alpha}({alpha}|{digit})*   { /* ident token */
+                              insert_update("ident");
+                              printf("%s\n", yytext);
+                            }
+{quote}{char}{quote}        { /* char token */
+                              insert_update("char");
+                              printf("%s\n", yytext);
+                            }
+.                           ;
 
 %%
   /* C/C++ code definition section */
