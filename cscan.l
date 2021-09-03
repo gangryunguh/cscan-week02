@@ -37,6 +37,7 @@ alpha [a-zA-Z_]
 schar [^'\"\n\\]
 char  ({back}?({schar}|{ditto})|{back}{back}|{back}{quote}|{octch})
 str   {back}?({schar}|{quote})|{back}{back}|{back}{ditto}|{octch}
+whitespace    [ \t]
 
 %%
   /* regular rules  section */
@@ -55,7 +56,43 @@ str   {back}?({schar}|{quote})|{back}{back}|{back}{ditto}|{octch}
                               insert_update("char");
                               printf("%s\n", yytext);
                             }
-.                           ;
+{ditto}({str}|{back}\n)+{ditto}   { /* string */
+               int i,j;
+               insert_update("string");
+               char *c;
+	           if ((c = strstr(yytext,"\\\n")) != NULL) {
+	              char *nc;
+	              for (nc = c+2; *nc; nc++,c++) {
+	                 *c = *nc;
+	              }
+	              *c = '\0';
+               }
+               printf("%s\n",yytext);
+
+            }
+\(          {
+               insert_update("(");
+               printf("%s\n",yytext);
+            }
+\)          {
+               insert_update(")");
+               printf("%s\n",yytext);
+            }
+
+\{          {
+               insert_update("(");
+               printf("%s\n",yytext);
+            }
+\}          {
+                  insert_update(")");
+                  printf("%s\n",yytext);
+               }
+\;          {
+                  insert_update(";");
+                  printf("%s\n",yytext);
+            }
+\n          ;
+.           ;
 
 %%
   /* C/C++ code definition section */
