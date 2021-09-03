@@ -27,11 +27,11 @@ void insert_update(char *);
 %}
 
   /* regular definition  section */
-quote \'
+quote '
 back  \\
 ditto \"
 octal [0-7]
-octch ({back}{octal}|{back}{octal}{octal}|{back}{octal}{octal})
+octch ({back}{octal}|{back}{octal}{octal}|{back}{octal}{octal}{octal})
 digit [0-9]
 alpha [a-zA-Z_]
 schar [^'\"\n\\]
